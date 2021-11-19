@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__
+
+# Environments
+.venv
+
+# IntelliJ config
+.idea
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup

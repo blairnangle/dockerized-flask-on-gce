@@ -1,0 +1,42 @@
+name: infra
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  INFRA_DIRECTORY: infra
+  TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+  GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY_FLATTENED }}
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.INFRA_DIRECTORY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform plan
+        id: plan
+        run: terraform plan -out=tfplan -input=false
+
+      - name: Terraform apply
+        id: apply
+        run: terraform apply -input=false -auto-approve tfplan

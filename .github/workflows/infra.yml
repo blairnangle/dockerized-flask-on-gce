@@ -2,8 +2,7 @@ name: infra
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 env:
   INFRA_DIRECTORY: infra
